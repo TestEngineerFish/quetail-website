@@ -1,5 +1,5 @@
 ---
-// 顶栏。variant=sky：首页用，透明叠在天空上，字色跟当前层的浅深（html[data-ink]）；variant=page：其余页面，吸顶、毛玻璃底。
+// 顶栏。variant=sky：首页用，透明并固定在视口上，滚过首屏仍在，字色跟当前层的浅深（html[data-ink]）；variant=page：其余页面，吸顶、毛玻璃底。
 // 手机上导航收进 <details>，不需要脚本。
 import { zh as t } from '../i18n/zh';
 import { site } from '../data/site';
@@ -27,6 +27,8 @@ const loginHref = site.accountUrl || '/download/';
 
 <style>
   .hd { position: absolute; inset: 0 0 auto; z-index: 20; padding-top: env(safe-area-inset-top, 0px); }
+  /* 首页透明顶栏钉在视口上。高于刻度尺，手机菜单展开时不会被读数格盖住。 */
+  .hd.sky { position: fixed; z-index: 40; }
   .hd.page { position: sticky; top: 0; background: color-mix(in srgb, var(--bg) 82%, transparent); backdrop-filter: saturate(1.4) blur(14px); -webkit-backdrop-filter: saturate(1.4) blur(14px); border-bottom: 1px solid var(--border-soft); }
   .hd-in { max-width: var(--maxw); margin-inline: auto; height: var(--header-h); display: flex; align-items: center; gap: 28px; padding-left: var(--gutter); padding-right: var(--gutter-r); }
   .mark { display: flex; align-items: center; gap: 9px; font-weight: 700; font-size: 19px; letter-spacing: .02em; text-decoration: none; }
@@ -36,15 +38,16 @@ const loginHref = site.accountUrl || '/download/';
   .nav a:hover, .nav a[aria-current='page'] { color: var(--text); }
   .login { font-size: 13.5px; text-decoration: none; border: 1px solid var(--border); border-radius: 999px; padding: 6px 14px; }
   .login:hover { background: var(--hover); }
-  .sky .mark, .sky .login { color: #fff; }
-  .sky .nav a { color: rgba(255, 255, 255, .8); }
+  .sky .mark, .sky .login { color: #fff; text-shadow: 0 1px 8px rgba(0, 0, 0, .65); }
+  .sky .nav a { color: rgba(255, 255, 255, .8); text-shadow: 0 1px 8px rgba(0, 0, 0, .65); }
   .sky .nav a:hover { color: #fff; }
   .sky .login { border-color: rgba(255, 255, 255, .42); }
   .sky .login:hover { background: rgba(255, 255, 255, .12); }
-  :global(html[data-ink='dark']) .sky .mark, :global(html[data-ink='dark']) .sky .login, :global(html[data-ink='dark']) .sky .menu summary { color: #16202c; }
-  :global(html[data-ink='dark']) .sky .nav a { color: rgba(22, 32, 44, .75); }
-  :global(html[data-ink='dark']) .sky .nav a:hover { color: #16202c; }
-  :global(html[data-ink='dark']) .sky .login { border-color: rgba(22, 32, 44, .3); }
+  /* 深字用实色。75% 透明在林梢顶色上只有约 3:1，链接近看不清。 */
+  :global(html[data-ink='dark']) .sky .mark, :global(html[data-ink='dark']) .sky .login, :global(html[data-ink='dark']) .sky .menu summary { color: #16202c; text-shadow: none; }
+  :global(html[data-ink='dark']) .sky .nav a { color: #16202c; text-shadow: none; }
+  :global(html[data-ink='dark']) .sky .nav a:hover { text-decoration: underline; }
+  :global(html[data-ink='dark']) .sky .login { border-color: rgba(22, 32, 44, .55); }
 
   .menu { display: none; position: relative; }
   .menu summary { list-style: none; cursor: pointer; width: 40px; height: 40px; display: grid; place-content: center; gap: 6px; border-radius: 10px; }

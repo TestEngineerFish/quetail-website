@@ -51,7 +51,7 @@ export const zh = {
       ],
       copyright: `© 2026 ${B.productName}`,
     },
-    notFound: { title: '这里什么都没有', body: '这个页面不存在，可能是链接写错了，或者它已经搬走了。', back: '回到首页' },
+    notFound: { eyebrow: '404', title: '这里什么都没有', body: '这个页面不存在，可能是链接写错了，或者它已经搬走了。', back: '回到首页' },
   },
 
   home: {

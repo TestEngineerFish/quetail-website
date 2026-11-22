@@ -35,6 +35,7 @@ const middle = rest.slice(0, -1);
         <div class="eyebrow">{first.eyebrow}</div>
         <h1 class="pre-line">{first.title}</h1>
         <p class="body hero-lead">{first.body}</p>
+        <p class="reduced-note">{t.home.reducedNote}</p>
         <div class="cta">
           {first.cta?.map((c) => <a class:list={['btn', c.primary ? 'btn-primary glow' : 'btn-glass']} href={c.href}>{c.label}</a>)}
         </div>
@@ -129,6 +130,10 @@ const middle = rest.slice(0, -1);
   .hero { justify-content: flex-start; padding-top: calc(var(--header-h) + 15vh + env(safe-area-inset-top, 0px)); }
   .hero .copy > * { max-width: 37rem; }
   .hero-lead { color: rgba(255, 240, 228, .88); }
+  /* 默认不占位。系统减少动态，或场景被标成 static 档（含 ?tier=static）时才说明原因。 */
+  .reduced-note { display: none; margin: 0; font-size: 13px; line-height: 1.55; color: rgba(255, 240, 228, .88); text-shadow: 0 1px 10px rgba(0, 0, 0, .45); }
+  @media (prefers-reduced-motion: reduce) { .reduced-note { display: block; } }
+  :global(html[data-sky-tier='static']) .reduced-note { display: block; }
   .cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; text-shadow: none; }
   .glow { box-shadow: 0 6px 24px rgba(232, 89, 12, .45); }
   .btn-glass { color: #fff; background: rgba(255, 255, 255, .12); border: 1px solid rgba(255, 255, 255, .36); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
