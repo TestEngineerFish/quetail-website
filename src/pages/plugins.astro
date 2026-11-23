@@ -12,9 +12,9 @@ const [rawP, rawT] = await Promise.all([
   fetchJson(`${site.apiBase}/plugins/catalog`),
   fetchJson(`${site.apiBase}/plugins/catalog?type=theme`),
 ]);
-const live = rawP !== null;
-const plugins = normalizePlugins(rawP ?? snapshot);
-const themes = normalizeThemes(rawT ?? { plugins: snapshot.themes });
+const live = rawP !== null && rawT !== null;
+const plugins = normalizePlugins(live ? rawP : snapshot);
+const themes = normalizeThemes(live ? rawT : { plugins: snapshot.themes });
 const price = (n: number, builtin: boolean) => (builtin ? P.builtin : n === 0 ? P.free : `${n} ${P.priceUnit}`);
 ---
 <Base title={P.title} description={P.lead} current="/plugins/">
