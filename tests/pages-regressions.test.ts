@@ -1,4 +1,4 @@
-// #6 / #7 / #8：文案从字典出来，显隐和顶栏定位按约定写在样式里。
+// #6 / #7 / #8 / #12：文案从字典出来，显隐和顶栏定位按约定写在样式里；插件页两侧取数一起判定线上。
 // 容器渲染整页需要 Astro.site，当前 container 不会带上站点地址，所以 404 / 首页核对模板与样式原文；顶栏组件本身可以渲染。
 import { readFileSync } from 'node:fs';
 import { experimental_AstroContainer as AstroContainer } from 'astro/container';
@@ -59,5 +59,15 @@ describe('首页顶栏', () => {
     const page = await container.renderToString(Header, { props: { variant: 'page' } });
     expect(sky).toContain('class="hd sky"');
     expect(page).toContain('class="hd page"');
+  });
+});
+
+describe('插件页线上判定', () => {
+  it('#12：插件与主题接口都成功才算线上，任一边失败两边一起回落离线清单', () => {
+    const page = source('src/pages/plugins.astro');
+    expect(page).toContain('rawP !== null && rawT !== null');
+    expect(page).toMatch(/normalizePlugins\(live \? rawP : snapshot\)/);
+    expect(page).toMatch(/normalizeThemes\(live \? rawT : \{ plugins: snapshot\.themes \}\)/);
+    expect(page).not.toContain('rawP ?? snapshot');
   });
 });
